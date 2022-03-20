@@ -1438,10 +1438,10 @@ contract SkullToons is ERC721, ERC721Enumerable, ERC721URIStorage, Pausable, Own
     uint256 private constant MAX_SUPPLY = 8; // 3353 Doodle Friends
     uint256 private constant MAX_MINT_LIMITED = 1; // 3 batch mint max
     uint256 private constant MAX_MINT_UNLIMITED = 8; // unlimited batch mint
-
+                                                                                                                                                
     uint256 private constant PRICE_WHITELIST_ONE = 0.06 ether; // Stage One for Whitelist
     uint256 private constant PRICE_WHITELIST_TWO = 0.07 ether; // Stage Two for Whitelist
-    uint256 private constant PRICE_PUBLIC = 0.08 ether; // Public Sale Price
+    uint256 private constant PRICE_PUBLIC = 0.01 ether; // Public Sale Price
 
     uint256 private _price;
     uint256 private _maxMint;
@@ -1469,7 +1469,7 @@ contract SkullToons is ERC721, ERC721Enumerable, ERC721URIStorage, Pausable, Own
 
 
     function _baseURI() internal pure override returns (string memory) {
-        return "https://gateway.pinata.cloud/ipfs/QmXqz9rXNj2939jzL7WWvwCfiyqbY9xJk7W96i5J6JxNBJ";
+        return "https://gateway.pinata.cloud/ipfs/";
     }
 
 
@@ -1504,7 +1504,8 @@ contract SkullToons is ERC721, ERC721Enumerable, ERC721URIStorage, Pausable, Own
         _safeMint(msg.sender, newItemId);
 
         // string memory finalTokenUri = string(abi.encodePacked(_baseURI(),'/',UintToString.uint2str(newItemId), '.json'));
-        string memory finalTokenUri = string(abi.encodePacked('/',UintToString.uint2str(newItemId), '.json'));
+        // string memory finalTokenUri = string(abi.encodePacked('/',UintToString.uint2str(newItemId), '.json'));
+        string memory finalTokenUri = "QmfAASejhcLL3MrmSpUwZyhv9DnyBrCsNxASVpbTzTjS3P"; 
 
         _setTokenURI(newItemId, finalTokenUri);
 
