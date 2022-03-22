@@ -1513,6 +1513,28 @@ contract SkullToons is ERC721, ERC721Enumerable, ERC721URIStorage, Pausable, Own
 
         emit SkullToonsummoned(msg.sender, newItemId);
     }
+    // Trying to mint multiple nfts at once
+    function test(uint times) public payable saleIsOpen {
+        uint256 total = _totalSupply();
+        uint256 maxNFTSupply = MAX_SUPPLY;
+        // uint256 maxMintCount = _maxMint;
+        uint256 price = _price;
+
+        // require(total + _ids.length <= maxNFTSupply, "MINT: Current count exceeds maximum element count.");
+        require(total <= maxNFTSupply, "MINT: Please go to the Opensea to buy skull toons.");
+        // require(_ids.length <= maxMintCount, "MINT: Current count exceeds maximum mint count.");
+        require(msg.value >= price, "MINT: Current value is below the sales price of skull toons");
+        require(times <= 10, "MINT: You can't mint more than 10 nfts at once");
+
+        for(uint i = 0; i < times; i++){
+            uint256 newItemId = _tokenIdCounter.current();
+            _safeMint(msg.sender, newItemId);
+            string memory finalTokenUri = "QmfAASejhcLL3MrmSpUwZyhv9DnyBrCsNxASVpbTzTjS3P";
+            _setTokenURI(newItemId, finalTokenUri);
+            _tokenIdCounter.increment();
+            emit SkullToonsummoned(msg.sender, newItemId); 
+        }
+    }
 
     function startWhitelistOne() public onlyOwner {
         SALE_OPEN = true;
