@@ -1,13 +1,19 @@
+import BeatLoader from "react-spinners/BeatLoader";
 import Header from "components/Header";
 import useActiveWeb3React from "hooks/useActiveWeb3React";
+import { useMintContract } from "hooks/useContract";
 import WalletModal from "modals/WalletModal";
 import { useState } from "react";
 import { useWalletModalToggle } from "state/application/hooks";
+import { useMintNFT } from "./hooks";
 
 const Home = () => {
   const [amount, setAmount] = useState(1);
   const toggleWalletModal = useWalletModalToggle();
   const { account } = useActiveWeb3React();
+  const [minting, setMinting] = useState(false);
+  const mintContract = useMintContract();
+  const mintNft = useMintNFT();
 
   const increment = () => {
     if (amount < 10) {
@@ -19,6 +25,18 @@ const Home = () => {
       return;
     }
     setAmount(amount - 1);
+  };
+
+  const handleMint = async () => {
+    if (!account) {
+      toggleWalletModal();
+      return;
+    }
+    setMinting(true);
+    mintNft(mintContract, amount, () => {
+      setMinting(false);
+      setAmount(1);
+    });
   };
   return (
     <>
@@ -67,28 +85,35 @@ const Home = () => {
           <div className="max-w-800 w-2/3 lg:w-1/3 pt-0 pb-8">
             <div className="flex flex-col items-center justify-center w-full">
               <div className="justify-center items-center flex text-black gap-4 w-full max-w-400">
-                <div
+                <button
                   className="flex items-center justify-center h-12 w-12 bg-white rounded-full text-2xl font-bold text-center cursor-pointer"
                   onClick={decrement}
                 >
                   -
-                </div>
+                </button>
                 <div className="rounded-full bg-white flex-1 text-center font-bold text-2xl">
                   {amount}
                 </div>
-                <div
+                <button
                   className="flex items-center justify-center h-12 w-12 bg-white  rounded-full text-2xl font-bold text-center cursor-pointer"
                   onClick={increment}
                 >
                   +
-                </div>
+                </button>
               </div>
               {account ? (
-                <nav className="flex items-center w-1/2 mt-6">
-                  <a className="rounded-full hover:bg-white whitespace-nowrap py-3 px-7 hover:text-black outline-none border-2 hover:border-none cursor-pointer flex justify-center items-center no-underline transition-all duration-200 ease-in-out w-full">
-                    Mint
+                <button
+                  className={`flex items-center w-1/2 mt-6 `}
+                  onClick={handleMint}
+                  disabled={minting ? true : false}
+                >
+                  <a
+                    aria-disabled={minting}
+                    className="rounded-full hover:bg-white whitespace-nowrap py-3 px-7 hover:text-black outline-none border-2 hover:border-none flex justify-center items-center no-underline transition-all duration-200 ease-in-out w-full"
+                  >
+                    {minting ? <BeatLoader color="#fff" /> : "Mint"}
                   </a>
-                </nav>
+                </button>
               ) : (
                 <nav
                   className="flex items-center w-1/2 mt-6"

@@ -8,8 +8,8 @@ export default function Home() {
     <>
       <div>
         <Head>
-          <title>NextJs Web3 Starter Kit</title>
-          <meta name="description" content="NextJs Web3 Starter Kit" />
+          <title>KAIJU FRENZ NFT</title>
+          <meta name="description" content="KAIJU FRENZ NFT" />
         </Head>
         <Landing />
       </div>
